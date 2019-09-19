@@ -3,6 +3,7 @@ package view;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -34,6 +35,7 @@ public class JoinMembershipView extends JFrame implements ActionListener{
 	JButton join_MembershipButton;
 	
 	public JoinMembershipView(DBConnection db) {
+		setIconImage(Toolkit.getDefaultToolkit().createImage("img/icon.jpg"));
 		this.db = db;
 		setTitle("Join_Membership_Service_View");
 		setSize(542, 962);
