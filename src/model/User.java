@@ -1,66 +1,68 @@
 package model;
 
 public class User {
-	private int userNo;
-	private String userID;
-	private String userPassword;
-	private String userName;
-	private String userAge;
-	private String userPhoneNumber;
-	private String userAddress;
-	
-	
-	
-	public User(int userNo, String userName, String userAge, String userID, String userPassword,String userAddress ,
-			String userPhoneNumber) {
-		this.userNo = userNo;
-		this.userID = userID;
-		this.userPassword = userPassword;
-		this.userName = userName;
-		this.userAge = userAge;
-		this.userPhoneNumber = userPhoneNumber;
-		this.userAddress = userAddress;
+	private String id;
+	private String pw;
+	private String nickname;
+	private String dateOfBirth;
+	private String name;
+	private String email;
+	private boolean manager;
+	public User(String id, String pw, String nickname, String dateOfBirth, String name, String email, String manager) {
+		this.id = id;
+		this.pw = pw;
+		this.nickname = nickname;
+		this.dateOfBirth = dateOfBirth;
+		this.name = name;
+		this.email = email;
+		this.manager = manager.equals("O") ? true : false;
 	}
-	public int getUserNo() {
-		return userNo;
+	public User() {
+		this.id = null;
+		this.pw = null;
+		this.nickname = null;
+		this.dateOfBirth = null;
+		this.name = null;
+		this.email = null;
+		this.manager = false;	
 	}
-	public void setUserNo(int userNo) {
-		this.userNo = userNo;
+	public String getId() {
+		return id;
 	}
-	public String getUserID() {
-		return userID;
+	public void setId(String id) {
+		this.id = id;
 	}
-	public void setUserID(String userID) {
-		this.userID = userID;
+	public boolean getManager() {
+		return manager;
 	}
-	public String getUserPassword() {
-		return userPassword;
+	public String getPw() {
+		return pw;
 	}
-	public void setUserPassword(String userPassword) {
-		this.userPassword = userPassword;
+	public void setPw(String pw) {
+		this.pw = pw;
 	}
-	public String getUserName() {
-		return userName;
+	public String getNickname() {
+		return nickname;
 	}
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
-	public String getUserAge() {
-		return userAge;
+	public String getDateOfBirth() {
+		return dateOfBirth;
 	}
-	public void setUserAge(String userAge) {
-		this.userAge = userAge;
+	public void setDateOfBirth(String dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
 	}
-	public String getUserPhoneNumber() {
-		return userPhoneNumber;
+	public String getName() {
+		return name;
 	}
-	public void setUserPhoneNumber(String userPhoneNumber) {
-		this.userPhoneNumber = userPhoneNumber;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public String getUserAddress() {
-		return userAddress;
+	public String getEmail() {
+		return email;
 	}
-	public void setUserAddress(String userAddress) {
-		this.userAddress = userAddress;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }

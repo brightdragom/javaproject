@@ -1,26 +1,18 @@
 package client;
 
-import java.awt.image.BufferStrategy;
-//바이트 데이터 관련 소켓 선언
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-
 //클라이언트, 서버를 사용하는 소켓 선언
 import java.io.IOException;
-import java.io.InputStream;
-
 //네트워크 소켓 선언
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-import javax.net.ssl.HostnameVerifier;
 //사운드 선언
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
-
 //오디오 출력 소켓 선언
 import javax.sound.sampled.TargetDataLine;
 

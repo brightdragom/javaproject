@@ -15,20 +15,17 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
+import client.chetClient;
 import dao.DBConnection;
 import model.User;
 
-public class TestView2 extends JFrame implements ActionListener {
+public class MainView extends JFrame implements ActionListener {
 
-	FriendView f;
-	ChatListView c;
+	//FriendView f;
+	//ChatListView c;
+	private User user;
 	BufferedImage img = null;
 	JButton friendButton = null;
 	JButton chatButton = null;
@@ -36,25 +33,29 @@ public class TestView2 extends JFrame implements ActionListener {
 	private boolean f_button = true;
 	private boolean c_button = false;
 	DBConnection db;
-	User user;
-
-	public TestView2(DBConnection db, User user) {
+	ImageIcon normalMikeIcon = new ImageIcon("img/nomalMikeIcon.png");
+	ImageIcon rolloverMikeIcon = new ImageIcon("img/pressedMikeIcon.png");
+	ImageIcon normalTextIcon = new ImageIcon("img/nomalTextIcon.png");
+	ImageIcon rolloverTextIcon = new ImageIcon("img/pressedTextIcon.png");
+	ImageIcon pressedIcon = new ImageIcon("img/starticon.png");
+	
+	public MainView(DBConnection db, User user) {
 		
 		super();
 		this.db = db;
-		setIconImage(Toolkit.getDefaultToolkit().createImage("img/icon.jpg"));
 		this.user = user;
+		setIconImage(Toolkit.getDefaultToolkit().createImage("img/icon.jpg"));
 		setTitle("testView");
-		setSize(365, 790);
+		setSize(350, 570);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JLayeredPane layeredPane = new JLayeredPane();
-		layeredPane.setBounds(0, 0, 350, 750);
+		layeredPane.setBounds(0, 0, 350, 450);
 		layeredPane.setLayout(null);
 
 		// 좌측 매뉴바 패널
 		JPanel panel1 = new JPanel();
 		panel1.setLayout(null);
-		panel1.setBounds(0, 0, 60, 650);
+		panel1.setBounds(0, 0, 60, 450);
 		panel1.setBackground(Color.lightGray);
 
 		// 친구버튼
@@ -67,7 +68,7 @@ public class TestView2 extends JFrame implements ActionListener {
 		friendButton.addActionListener(this);
 
 		panel1.add(friendButton);
-
+		
 		// 채팅버튼
 		chatButton = new JButton(new ImageIcon("img/chat.PNG"));
 		chatButton.setBounds(5, 120, 50, 50);
@@ -82,9 +83,9 @@ public class TestView2 extends JFrame implements ActionListener {
 		// 우측화면 패널
 		panel2 = new JPanel();
 		panel2.setLayout(null);
-		panel2.setBounds(60, 0, 290, 650);
+		panel2.setBounds(45, 0, 290, 450);
 		panel2.setBackground(Color.WHITE);
-		JButton button = new JButton("Start!");
+		JButton button = new JButton(normalMikeIcon);
 		button.addActionListener(new ActionListener() {
 
 			@Override
@@ -95,18 +96,39 @@ public class TestView2 extends JFrame implements ActionListener {
 			}
 
 		});
-		button.setBounds(5, 600, 280, 50);
+		button.setBounds(15,50, 280, 200);
 		button.setBorderPainted(false);
 		button.setFocusPainted(true);
 		button.setContentAreaFilled(false);
 		button.setOpaque(false);
 		button.setFont(new Font("돋움", Font.BOLD, 30));
+		button.setPressedIcon(pressedIcon);
+		button.setRolloverIcon(rolloverMikeIcon);
 		panel2.add(button);
+		JButton button2 = new JButton(normalTextIcon);
+		button2.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("push the button");
+				new chetClient(user);
+			}
+
+		});
+		button2.setBounds(15, 250, 280, 200);
+		button2.setBorderPainted(false);
+		button2.setFocusPainted(true);
+		button2.setContentAreaFilled(false);
+		button2.setOpaque(false);
+		button2.setFont(new Font("돋움", Font.BOLD, 30));
+		button2.setPressedIcon(pressedIcon);
+		button2.setRolloverIcon(rolloverTextIcon);
+		panel2.add(button2);
 		// f = new FriendView();
 		// 광고
 		AdvertisingView adver = new AdvertisingView();
 		adver.setLayout(null);
-		adver.setBounds(0, 650, 350, 100);
+		adver.setBounds(0, 450, 350, 100);
 		adver.setOpaque(false);
 		new Thread(adver).start();
 
@@ -130,7 +152,7 @@ public class TestView2 extends JFrame implements ActionListener {
 				friendButton.setIcon(friend2);
 				c_button = false;
 				f_button = true;
-				ChangeView();
+				//ChangeView();
 			}
 		} else if (e.getSource().equals(chatButton)) {
 			if (f_button && !c_button) {
@@ -138,11 +160,12 @@ public class TestView2 extends JFrame implements ActionListener {
 				friendButton.setIcon(friend1);
 				c_button = true;
 				f_button = false;
-				ChangeView();
+				//anfuy();
 			}
 		}
 	}
-
+}
+	/*
 	// ----------------------------------------------------화면전환 해야댐
 	// 우측 패널 전환
 	public void ChangeView() {
@@ -162,7 +185,7 @@ public class TestView2 extends JFrame implements ActionListener {
 			System.out.println("chage f > c");
 		}
 	}
-
+	*/
 	// 광고
 	class AdvertisingView extends JPanel implements Runnable {
 
@@ -211,7 +234,7 @@ public class TestView2 extends JFrame implements ActionListener {
 		}
 
 	}
-
+	/*
 	// 친구선택시
 	class FriendView extends JPanel implements ActionListener, ListSelectionListener {
 
@@ -241,7 +264,7 @@ public class TestView2 extends JFrame implements ActionListener {
 			 * JLabel a = new JLabel("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 			 * a.setBounds(5,100,280,60); a.setBackground(Color.black); panel2.add(a);
 			 */
-
+/*
 			JPanel f_list = new JPanel();
 			f_list.setBounds(5, 100, 280, 550);
 			f_list.setBackground(Color.white);
@@ -332,5 +355,7 @@ public class TestView2 extends JFrame implements ActionListener {
 		}
 
 	}
+	
 
 }
+*/

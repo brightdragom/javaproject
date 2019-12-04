@@ -1,18 +1,17 @@
 package view;
 
-import java.awt.Container;
-import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Toolkit;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -20,127 +19,153 @@ import javax.swing.JTextField;
 
 import dao.DBConnection;
 
+public class JoinMembershipView extends JFrame implements ActionListener {
 
-public class JoinMembershipView extends JFrame implements ActionListener{
-	DBConnection db;
-	BufferedImage img = null;
-	
-	JTextField userID_TextField;
-	JPasswordField userPassword_Field;
-	JTextField userName_TextField;
-	JTextField userAge_TextField;
-	JTextField userPhoneNumber_TextField;
-	JTextField userAddress_TextField;
-	JButton Cancel_Button;
-	JButton join_MembershipButton;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private DBConnection db;
+	private BufferedImage img = null;
+	private JTextField tfId, tfName, tfNickName,tfDateOfBirth, tfEmail;
+	private JPasswordField pfPwd; // 비밀번호
+	private JButton btnInsert, btnCancel, btnOverlap; // 가입, 취소
+	private GridBagLayout gb;
+	private GridBagConstraints gbc;
+	private boolean overlab_check = false;
+	private boolean overlab_check2 = false;
 	
 	public JoinMembershipView(DBConnection db) {
-		setIconImage(Toolkit.getDefaultToolkit().createImage("img/icon.jpg"));
 		this.db = db;
-		setTitle("Join_Membership_Service_View");
-		setSize(542, 962);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
-		Container contentPane = getContentPane();
-		try {
-			img = ImageIO.read(new File("img/join.jpg"));
-		} catch (IOException e) {
-			System.out.println("이미지 불러오기 실패");
-			System.exit(0);
-		}
-		MyPanel background = new MyPanel();
-		background.setBounds(0, 0, 542, 962);
-		contentPane.setLayout(null);
-		Font font = new Font("돋움",Font.BOLD, 30);
-		userID_TextField = new JTextField(/*"Please enter your using ID..."*/);
-		userID_TextField.setBounds(220, 255, 250, 50);
-		userID_TextField.setFont(font);
-		userID_TextField.setOpaque(false);
-		contentPane.add(userID_TextField);
-		
-		userPassword_Field = new JPasswordField(/*"Please enter your using PW..."*/);
-		userPassword_Field.setBounds(220, 335, 250, 50);
-		userPassword_Field.setOpaque(false);
-		userPassword_Field.setFont(font);
-		contentPane.add(userPassword_Field);
-		
-		userName_TextField = new JTextField(/*"Please enter your Name..."*/);
-		userName_TextField.setBounds(220, 415, 250, 50);
-		userName_TextField.setOpaque(false);
-		userName_TextField.setFont(font);
-		contentPane.add(userName_TextField);
-		
-		userAge_TextField = new JTextField(/*"Please enter your Age..."*/);
-		userAge_TextField.setBounds(220, 495, 250, 50);
-		userAge_TextField.setOpaque(false);
-		userAge_TextField.setFont(font);
-		contentPane.add(userAge_TextField);
-		
-		userPhoneNumber_TextField = new JTextField(/*"Please enter your PhoneNumber..."*/);
-		userPhoneNumber_TextField.setBounds(220, 575, 250, 50);
-		userPhoneNumber_TextField.setOpaque(false);
-		userPhoneNumber_TextField.setFont(font);
-		contentPane.add(userPhoneNumber_TextField);
-		
-		userAddress_TextField = new JTextField();
-		userAddress_TextField.setBounds(220, 655, 250, 50);
-		userAddress_TextField.setOpaque(false);
-		userAddress_TextField.setFont(font);
-		contentPane.add(userAddress_TextField);
-		
-		join_MembershipButton = new JButton("Join Membership");
-		join_MembershipButton.setBounds(120, 755, 150, 48);
-		contentPane.add(join_MembershipButton);
-		join_MembershipButton.setBorderPainted(false);
-		join_MembershipButton.setFocusPainted(false);
-		join_MembershipButton.setContentAreaFilled(false);
-		join_MembershipButton.addActionListener(this);
-		
-		Cancel_Button = new JButton("Cancel");
-		Cancel_Button.setBounds(300, 755, 134, 48);
-		contentPane.add(Cancel_Button);
-		Cancel_Button.setBorderPainted(false);
-		Cancel_Button.setFocusPainted(false);
-		Cancel_Button.setContentAreaFilled(false);
-		Cancel_Button.addActionListener(this);
-		
-		contentPane.add(background);
-		setVisible(true);
+		createUI();
 	}
 	
+	private void gbAdd(JComponent c, int x, int y, int w, int h) {
+		gbc.gridx = x;
+		gbc.gridy = y;
+		gbc.gridwidth = w;
+		gbc.gridheight = h;
+		gb.setConstraints(c, gbc);
+		gbc.insets = new Insets(2, 2, 2, 2);
+		add(c, gbc);
+	}
+
+	public void createUI() {
+		this.setTitle("회원가입");
+		gb = new GridBagLayout();
+		setLayout(gb);
+		gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.weightx = 1.0;
+		gbc.weighty = 1.0;
+
+		// 아이디
+		JLabel inputIdBox = new JLabel("아이디 : ");
+		tfId = new JTextField(20);
+		// 그리드백에 붙이기
+		gbAdd(inputIdBox, 0, 0, 1, 1);
+		gbAdd(tfId, 1, 0, 3, 1);
+
+		// 비밀번호
+		JLabel inputPasswordBox = new JLabel("비밀번호 : ");
+		pfPwd = new JPasswordField(20);
+		gbAdd(inputPasswordBox, 0, 1, 1, 1);
+		gbAdd(pfPwd, 1, 1, 3, 1);
+
+		// 이름
+		JLabel inputNameBox = new JLabel("이름 :");
+		tfName = new JTextField(20);
+		gbAdd(inputNameBox, 0, 2, 1, 1);
+		gbAdd(tfName, 1, 2, 3, 1);
+
+		JLabel inputNickNameBox = new JLabel("닉네임 :");
+		tfNickName = new JTextField(20);
+		gbAdd(inputNickNameBox, 0, 3, 1, 1);
+		gbAdd(tfNickName, 1, 3, 3, 1);
+
+		JLabel inputBirthBox = new JLabel("생년월일 :");
+		tfDateOfBirth = new JTextField(20);
+		gbAdd(inputBirthBox, 0, 4, 1, 1);
+		gbAdd(tfDateOfBirth, 1, 4, 3, 1);
+
+		JLabel inputEmailBox = new JLabel("Email :");
+		tfEmail = new JTextField(20);
+		gbAdd(inputEmailBox, 0, 5, 1, 1);
+		gbAdd(tfEmail, 1, 5, 3, 1);
+
+		// 버튼
+		JPanel pButton = new JPanel();
+		btnInsert = new JButton("가입");
+		btnOverlap = new JButton("아이디 중복검사");
+		btnCancel = new JButton("취소");
+		pButton.add(btnInsert);
+		pButton.add(btnOverlap);
+		pButton.add(btnCancel);
+		gbAdd(pButton, 0, 10, 4, 1);
+
+		// 버튼에 감지기를 붙이자
+		btnInsert.addActionListener(this);
+		btnOverlap.addActionListener(this);
+		btnCancel.addActionListener(this);
+
+		setSize(350, 350);
+		setVisible(true);
+		// setDefaultCloseOperation(EXIT_ON_CLOSE); //System.exit(0) //프로그램종료
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE); // dispose(); //현재창만 닫는다.
+
+	}// createUI
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
-		if(e.getSource().equals(Cancel_Button)) {
+
+		if (e.getSource().equals(btnCancel)) {
 			dispose();
-		}else if(e.getSource().equals(join_MembershipButton)) {	//DB에 가입정보 추가
-			String joinID = userID_TextField.getText();
-			int joinPW = userPassword_Field.getPassword().length;
-			String joinName = userName_TextField.getText();
-			String joinAge = userAge_TextField.getText();
-			String joinPhoneNumber = userPhoneNumber_TextField.getText();
-			String joinAddress = userAddress_TextField.getText();
-			
-			if(joinID.length() == 0) {
-				JOptionPane.showMessageDialog(this, "Please enter the ID!!");
-			}else if(joinPW == 0) {
-				JOptionPane.showMessageDialog(this, "Please enter the PW!!");
-			}else if(joinName.length() == 0) {
-				JOptionPane.showMessageDialog(this, "Please enter the Name!!");
-			}else if(joinAge.length() == 0) {
-				JOptionPane.showMessageDialog(this, "Please enter the Age!!");
-			}else if(joinPhoneNumber.length() == 0) {
-				JOptionPane.showMessageDialog(this, "Please enter the PhoneNumber!!");
-			}else if(joinAddress.length() == 0) {
-				JOptionPane.showMessageDialog(this, "Please enter the Address!!");
+		} else if (e.getSource().equals(btnInsert)) { // DB에 가입정보 추가
+			if(overlab_check2 && overlab_check) {
+				if(db.overlabId(tfId.getText())) {
+					String joinID = tfId.getText();
+					int joinPW = pfPwd.getPassword().length;
+					String joinName = tfName.getText();
+					String join_NickName = tfNickName.getText();
+					String join_DateOfBirth = tfDateOfBirth.getText();
+					String join_Email = tfEmail.getText();
+
+					if (joinID.length() == 0) {
+						JOptionPane.showMessageDialog(this, "Please enter the ID!!");
+					} else if (joinPW == 0) {
+						JOptionPane.showMessageDialog(this, "Please enter the PW!!");
+					} else if (joinName.length() == 0) {
+						JOptionPane.showMessageDialog(this, "Please enter the Name!!");
+					} else if (join_NickName.length() == 0) {
+						JOptionPane.showMessageDialog(this, "Please enter the Age!!");
+					} else if (join_DateOfBirth.length() == 0) {
+						JOptionPane.showMessageDialog(this, "Please enter the PhoneNumber!!");
+					} else if (join_Email.length() == 0) {
+						JOptionPane.showMessageDialog(this, "Please enter the Address!!");
+					} else {
+						db.join_membership_method(tfId.getText(), pfPwd.getPassword(),tfName.getText(), tfNickName.getText(), tfDateOfBirth.getText(),tfEmail.getText());
+
+						System.out.println("DB에 회원가입정보 입력 완료");
+						dispose();
+					}
+				}else {
+					JOptionPane.showMessageDialog(this, "Please Duplicate inspection!!");
+					overlab_check = false;
+				}
 			}else {
-				db.join_membership_method(userID_TextField.getText(), userPassword_Field.getPassword(), userName_TextField.getText(),
-						userAge_TextField.getText(), userPhoneNumber_TextField.getText(), userAddress_TextField.getText());
-				System.out.println("DB에 회원가입정보 입력 완료");
-				dispose();
+				JOptionPane.showMessageDialog(this, "Please Duplicate inspection!!");
+				overlab_check = false;
 			}
+		}else if(e.getSource().equals(btnOverlap)) {
+			overlab_check2 = db.overlabId(tfId.getText());
+			JOptionPane.showMessageDialog(this, overlab_check2 ? "This ID is available.":"The ID already exists.");
+			overlab_check = overlab_check2?true:false;
 		}
 	}
+
 	class MyPanel extends JPanel {
 		public void paint(Graphics g) {
 			g.drawImage(img, 0, 0, null);

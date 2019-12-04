@@ -17,22 +17,21 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 import dao.DBConnection;
 import model.User;
 
 public class LoginView extends JFrame implements ActionListener {
 	BufferedImage img = null;
-	JTextField loginTextField;
-	JPasswordField passwordField;
-	JButton loginButton;
-	JButton join_MembershipButton;
 	DBConnection db;
 
 	public LoginView(DBConnection db) {
 		setIconImage(Toolkit.getDefaultToolkit().createImage("img/icon.jpg"));
 		
 		this.db = db;
+		/*
 		setTitle("LoginTest");
 		setSize(1600, 938);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -83,22 +82,82 @@ public class LoginView extends JFrame implements ActionListener {
 		join_MembershipButton.addActionListener(this);
 
 		contentPane.add(background);
+		setVisible(true);*/
+		
+		setTitle("랜덤채팅 로그인");
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 432, 164);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		JLabel lblId = new JLabel("ID");
+		lblId.setHorizontalAlignment(SwingConstants.CENTER);
+		lblId.setBounds(40, 30, 47, 15);
+		contentPane.add(lblId);
+
+		loginTextField = new JTextField();
+		loginTextField.setText("");
+		// sID = txtId.getText();
+		loginTextField.setBounds(99, 27, 167, 21);
+		contentPane.add(loginTextField);
+		loginTextField.setColumns(10);
+
+		JLabel lblPw = new JLabel("PW");
+		lblPw.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPw.setBounds(40, 55, 47, 15);
+		contentPane.add(lblPw);
+
+		loginPasswordField = new JPasswordField();
+		loginPasswordField.setText("");
+		// sPW = txtId.getText();
+		loginPasswordField.setBounds(99, 52, 167, 21);
+		contentPane.add(loginPasswordField);
+		loginPasswordField.setColumns(10);
+
+		loginButton = new JButton("로그인");
+		loginButton.addActionListener(this);
+		loginButton.setBounds(274, 27, 102, 46);
+		contentPane.add(loginButton);
+
+		joinButton = new JButton("회원 가입");
+		joinButton.addActionListener(this);
+		joinButton.setBounds(274, 80, 102, 30);
+		contentPane.add(joinButton);
+
+		findIdButton = new JButton("ID 찾기");
+		findIdButton.addActionListener(this);
+		findIdButton.setBounds(40, 80, 109, 30);
+		contentPane.add(findIdButton);
+
+		findPwButton = new JButton("PW찾기");
+		findPwButton.addActionListener(this);
+		findPwButton.setBounds(152, 80, 118, 30);
+		contentPane.add(findPwButton);
 		setVisible(true);
 	}
-
+	private JPanel contentPane;
+	private JTextField loginTextField;
+	private JPasswordField loginPasswordField;
+	private JButton loginButton, joinButton, findIdButton, findPwButton;
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		User user = db.login(loginTextField.getText(), passwordField.getPassword());
 		if (e.getSource().equals(loginButton)) {
+			User user = db.login(loginTextField.getText(), loginPasswordField.getPassword());
 			if (user != null) {
 				JOptionPane.showMessageDialog(this, "Login Success!!");
-				new TestView2(db,user);
+				new MainView(db,user);
 				dispose();
 			} else {
 				JOptionPane.showMessageDialog(this, "Login False!!");
 			}
-		} else if (e.getSource().equals(join_MembershipButton)) {
+		} else if (e.getSource().equals(joinButton)) {
 			new JoinMembershipView(db);
+		}else if(e.getSource().equals(findIdButton)) {
+			new FindIDView(db);
+		}else if(e.getSource().equals(findPwButton)) {
+			new FindPWView(db);
 		}
 	}
 

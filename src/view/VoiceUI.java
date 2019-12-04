@@ -61,6 +61,7 @@ public class VoiceUI extends JDialog {
 	 */
 	public VoiceUI() {
 		setTitle("Voice Chat"); 
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setIconImage(Toolkit.getDefaultToolkit().createImage("img/micImage.png"));
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 400);
